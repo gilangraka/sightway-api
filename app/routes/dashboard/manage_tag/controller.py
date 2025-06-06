@@ -1,18 +1,21 @@
 from app.models.m_tag import MTag
 from app.helpers import paginate, validate_unique, generate_slug
-from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema
+from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema, MTagPydantic
 from fastapi import Query, APIRouter, HTTPException, status
 from typing import Optional
 
 async def index(
     page: int = (Query(1, ge=1)),
-    q: Optional[str] = Query(None, description="Keyword pencarian")
+    q: Optional[str] = Query(None)
 ):
     try:
         query = MTag.all()
-        if q:
-            query = query.filter(name__icontains=q)
-        return await paginate(query, page)
+        return await paginate(
+            queryset=query, 
+            page=page, 
+            q=q, 
+            fields=["id", "name", "slug"]
+        )
 
     except ValueError as e:
         raise HTTPException(
@@ -65,13 +68,13 @@ async def update(id: int, data: StoreUpdateSchema):
             )
 
         if data.name != tag.name:
-            await validate_unique(MTag, data.name)
+            await validate_unique(MTag, "name", data.name)
 
         slug = generate_slug(data.name)
         payload = data.dict()
         payload["slug"] = slug
 
-        tag.update_from_dict(**payload)
+        tag.update_from_dict(payload)
         await tag.save()
         
         return tag

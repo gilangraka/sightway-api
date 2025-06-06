@@ -1,5 +1,6 @@
 from typing import Generic, List, TypeVar
 from pydantic import BaseModel
+from typing import Optional
 
 T = TypeVar("T")
 
@@ -8,9 +9,26 @@ class PaginationResult(BaseModel, Generic[T]):
     page: int
     data: List[T]
 
-async def paginate(queryset, page: int = 1) -> PaginationResult:
-    limit = 10  # fixed statis 10
+async def paginate(
+    queryset, 
+    page: int = 1, 
+    q: Optional[str] = None,
+    fields: Optional[list] = None,
+) -> PaginationResult:
+    limit = 10
     offset = (page - 1) * limit
+
+    if q:
+        queryset = queryset.filter(name__icontains=q)
+
     total = await queryset.count()
-    data = await queryset.offset(offset).limit(limit)
+
+    # lakukan paginasi dulu
+    queryset = queryset.offset(offset).limit(limit)
+
+    # baru values jika diminta
+    if fields:
+        queryset = queryset.values(*fields)
+
+    data = await queryset
     return PaginationResult(total=total, page=page, data=data)

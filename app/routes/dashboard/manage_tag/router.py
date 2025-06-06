@@ -5,8 +5,8 @@ from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema
 router = APIRouter(prefix="/manage-tag", tags=["manage-tag"])
 
 @router.get("/")
-async def get_data(page: int = 1):
-    return await index(page)
+async def get_data(page: int = 1, q: str = None):
+    return await index(page, q)
 
 @router.get("/{id}")
 async def get_data_by_id(id: int):
