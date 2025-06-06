@@ -1,4 +1,4 @@
-from app.models.m_tags import MTags
+from app.models.m_tag import MTag
 from app.helpers import paginate, validate_unique, generate_slug
 from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema
 from fastapi import Query, APIRouter, HTTPException, status
@@ -9,7 +9,7 @@ async def index(
     q: Optional[str] = Query(None, description="Keyword pencarian")
 ):
     try:
-        query = MTags.all()
+        query = MTag.all()
         if q:
             query = query.filter(name__icontains=q)
         return await paginate(query, page)
@@ -22,7 +22,7 @@ async def index(
 
 async def show(id: int):
     try:
-        data = await MTags.get_or_none(id=id)
+        data = await MTag.get_or_none(id=id)
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -38,13 +38,13 @@ async def show(id: int):
 
 async def store(data: StoreUpdateSchema):
     try:
-        await validate_unique(MTags, "name", data.name)
+        await validate_unique(MTag, "name", data.name)
 
         slug = generate_slug(data.name)
         payload = data.dict()
         payload["slug"] = slug
 
-        new_tag = await MTags.create(**payload)
+        new_tag = await MTag.create(**payload)
         return new_tag
 
     except ValueError as e:
@@ -56,7 +56,7 @@ async def store(data: StoreUpdateSchema):
 
 async def update(id: int, data: StoreUpdateSchema):
     try:
-        tag = await MTags.get_or_none(id=id)
+        tag = await MTag.get_or_none(id=id)
 
         if tag is None:
             raise HTTPException(
@@ -65,7 +65,7 @@ async def update(id: int, data: StoreUpdateSchema):
             )
 
         if data.name != tag.name:
-            await validate_unique(MTags, data.name)
+            await validate_unique(MTag, data.name)
 
         slug = generate_slug(data.name)
         payload = data.dict()
@@ -85,7 +85,7 @@ async def update(id: int, data: StoreUpdateSchema):
 
 async def destroy(id: int):
     try:
-        tag = await MTags.get_or_none(id=id)
+        tag = await MTag.get_or_none(id=id)
 
         if tag is None:
             raise HTTPException(
