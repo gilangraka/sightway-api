@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
-from app.config import TORTOISE_ORM
+from app.core.config import TORTOISE_ORM
 from app.routes.dashboard.manage_tag.routes import router as manage_tag_router
 
 app = FastAPI()
