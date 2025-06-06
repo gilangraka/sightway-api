@@ -1,6 +1,6 @@
-from app.models.m_tag import MTag
+from app.models.m_category import MCategory
 from app.helpers import paginate, validate_unique, generate_slug
-from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema
+from app.routes.dashboard.manage_category.schema import StoreUpdateSchema
 from fastapi import Query, APIRouter, HTTPException, status
 from typing import Optional
 
@@ -9,7 +9,7 @@ async def index(
     q: Optional[str] = Query(None)
 ):
     try:
-        query = MTag.all()
+        query = MCategory.all()
         return await paginate(
             queryset=query, 
             page=page, 
@@ -25,11 +25,11 @@ async def index(
 
 async def show(id: int):
     try:
-        data = await MTag.get_or_none(id=id)
+        data = await MCategory.get_or_none(id=id)
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Tag not found"
+                detail="Category not found"
             )
         return data
 
@@ -41,14 +41,14 @@ async def show(id: int):
 
 async def store(data: StoreUpdateSchema):
     try:
-        await validate_unique(MTag, "name", data.name)
+        await validate_unique(MCategory, "name", data.name)
 
         slug = generate_slug(data.name)
         payload = data.dict()
         payload["slug"] = slug
 
-        new_tag = await MTag.create(**payload)
-        return new_tag
+        new_category = await MCategory.create(**payload)
+        return new_category
 
     except ValueError as e:
         raise HTTPException(
@@ -59,25 +59,25 @@ async def store(data: StoreUpdateSchema):
 
 async def update(id: int, data: StoreUpdateSchema):
     try:
-        tag = await MTag.get_or_none(id=id)
+        category = await MCategory.get_or_none(id=id)
 
-        if tag is None:
+        if category is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Tag not found"
+                detail="Category not found"
             )
 
-        if data.name != tag.name:
-            await validate_unique(MTag, "name", data.name)
+        if data.name != category.name:
+            await validate_unique(MCategory, "name", data.name)
 
         slug = generate_slug(data.name)
         payload = data.dict()
         payload["slug"] = slug
 
-        tag.update_from_dict(payload)
-        await tag.save()
+        category.update_from_dict(payload)
+        await category.save()
         
-        return tag
+        return category
 
     except ValueError as e:
         raise HTTPException(
@@ -88,15 +88,15 @@ async def update(id: int, data: StoreUpdateSchema):
 
 async def destroy(id: int):
     try:
-        tag = await MTag.get_or_none(id=id)
+        category = await MCategory.get_or_none(id=id)
 
-        if tag is None:
+        if category is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Tag not found"
+                detail="Category not found"
             )
 
-        await tag.delete()
+        await category.delete()
         return True
 
     except ValueError as e:
