@@ -24,7 +24,7 @@ TORTOISE_ORM = {
                 "app.models.role",
                 "app.models.app_history",
                 "app.models.m_category",
-                "app.models.m_tags",
+                "app.models.m_tag",
                 "app.models.post",
                 "app.models.blindstick",
                 "app.models.penyandang",
