@@ -4,11 +4,13 @@ from app.core.config import TORTOISE_ORM
 
 from app.routes.dashboard.manage_tag.router import router as manage_tag_router
 from app.routes.dashboard.manage_category.router import router as manage_category_router
+from app.routes.dashboard.manage_admin.router import router as manage_admin_router
 
 app = FastAPI()
 
 app.include_router(manage_tag_router)
 app.include_router(manage_category_router)
+app.include_router(manage_admin_router)
 
 register_tortoise(
     app,

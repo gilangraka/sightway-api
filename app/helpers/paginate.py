@@ -23,10 +23,9 @@ async def paginate(
 
     total = await queryset.count()
 
-    # lakukan paginasi dulu
+    # Paginasi sebelum values supaya tetap QuerySet
     queryset = queryset.offset(offset).limit(limit)
 
-    # baru values jika diminta
     if fields:
         queryset = queryset.values(*fields)
 
