@@ -1,0 +1,15 @@
+from fastapi import FastAPI
+from tortoise.contrib.fastapi import register_tortoise
+from app.config import TORTOISE_ORM
+from app.routes.dashboard.manage_tag.routes import router as manage_tag_router
+
+app = FastAPI()
+
+app.include_router(manage_tag_router)
+
+register_tortoise(
+    app,
+    config=TORTOISE_ORM,
+    generate_schemas=True,
+    add_exception_handlers=True,
+)
