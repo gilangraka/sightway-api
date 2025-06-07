@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from app.routes.dashboard.manage_penyandang.controller import index, show, last_status_blindstick
 from typing import Optional
 
-router = APIRouter(prefix="/manage-pemantau", tags=["manage-pemantau"])
+router = APIRouter(prefix="/manage-penyandang", tags=["manage-penyandang"])
 
 @router.get("/")
 async def get_data(page: int = 1, q: Optional[str] = None):

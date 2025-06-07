@@ -7,6 +7,9 @@ from app.routes.dashboard.manage_category.router import router as manage_categor
 from app.routes.dashboard.manage_admin.router import router as manage_admin_router
 from app.routes.dashboard.manage_blindstick.router import router as manage_blindstick_router
 from app.routes.dashboard.manage_pemantau.router import router as manage_pemantau_router
+from app.routes.dashboard.manage_penyandang.router import router as manage_penyandang_router
+from app.routes.dashboard.manage_dashboard.router import router as manage_dashboard_router
+
 
 app = FastAPI()
 
@@ -15,6 +18,8 @@ app.include_router(manage_category_router)
 app.include_router(manage_admin_router)
 app.include_router(manage_blindstick_router)
 app.include_router(manage_pemantau_router)
+app.include_router(manage_penyandang_router)
+app.include_router(manage_dashboard_router)
 
 register_tortoise(
     app,
