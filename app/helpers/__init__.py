@@ -1,7 +1,7 @@
 from .paginate import paginate
 from .generate_slug import generate_slug
 from .validator import validate_unique
-from .bcrypt_pass import hash_password, verify_password
+from .auth import hash_password, verify_password, create_access_token, decode_access_token
 
 __all__ = [
     'paginate',
@@ -9,4 +9,6 @@ __all__ = [
     'validate_unique',
     'hash_password',
     'verify_password',
+    'create_access_token',
+    'decode_access_token'
 ]

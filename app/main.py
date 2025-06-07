@@ -11,7 +11,7 @@ from app.routes.dashboard.manage_penyandang.router import router as manage_penya
 from app.routes.dashboard.manage_dashboard.router import router as manage_dashboard_router
 
 from app.routes.guest.router import router as guest_router
-
+from app.routes.auth.router import router as auth_router
 
 app = FastAPI()
 
@@ -22,7 +22,9 @@ app.include_router(manage_blindstick_router)
 app.include_router(manage_pemantau_router)
 app.include_router(manage_penyandang_router)
 app.include_router(manage_dashboard_router)
+
 app.include_router(guest_router)
+app.include_router(auth_router)
 
 register_tortoise(
     app,
