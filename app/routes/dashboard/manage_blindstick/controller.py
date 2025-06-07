@@ -1,6 +1,6 @@
 from app.models.blindstick import Blindstick
 from app.helpers import paginate, validate_unique, generate_slug
-from app.routes.dashboard.manage_blindstick.schema import StoreUpdateSchema
+from app.routes.dashboard.manage_blindstick.schema import StoreUpdateSchema, ManageBlindstickSchema
 from fastapi import Query, APIRouter, HTTPException, status
 from typing import Optional
 from datetime import datetime, timedelta
@@ -18,7 +18,7 @@ async def index(
         return await paginate(
             queryset=query, 
             page=page, 
-            fields=["id", "mac_address", "is_used"]
+            schema=ManageBlindstickSchema
         )
 
     except ValueError as e:

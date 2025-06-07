@@ -1,6 +1,6 @@
 from app.models.m_tag import MTag
 from app.helpers import paginate, validate_unique, generate_slug
-from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema
+from app.routes.dashboard.manage_tag.schema import StoreUpdateSchema, TagSchema
 from fastapi import Query, APIRouter, HTTPException, status
 from typing import Optional
 
@@ -14,7 +14,7 @@ async def index(
             queryset=query, 
             page=page, 
             q=q, 
-            fields=["id", "name", "slug"]
+            schema=TagSchema
         )
 
     except ValueError as e:

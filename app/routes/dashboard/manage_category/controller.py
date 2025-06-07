@@ -1,6 +1,6 @@
 from app.models.m_category import MCategory
 from app.helpers import paginate, validate_unique, generate_slug
-from app.routes.dashboard.manage_category.schema import StoreUpdateSchema
+from app.routes.dashboard.manage_category.schema import StoreUpdateSchema, CategorySchema
 from fastapi import Query, APIRouter, HTTPException, status
 from typing import Optional
 
@@ -10,11 +10,12 @@ async def index(
 ):
     try:
         query = MCategory.all()
+        
         return await paginate(
-            queryset=query, 
-            page=page, 
-            q=q, 
-            fields=["id", "name", "slug"]
+            queryset=query,
+            page=page,
+            q=q,
+            schema=CategorySchema  
         )
 
     except ValueError as e:

@@ -1,6 +1,6 @@
-from typing import Generic, List, TypeVar
+from typing import Generic, List, Optional, TypeVar
 from pydantic import BaseModel
-from typing import Optional
+from tortoise.models import Model
 
 T = TypeVar("T")
 
@@ -10,24 +10,34 @@ class PaginationResult(BaseModel, Generic[T]):
     data: List[T]
 
 async def paginate(
-    queryset, 
-    page: int = 1, 
+    queryset,
+    page: int = 1,
     q: Optional[str] = None,
-    fields: Optional[list] = None,
+    search_field: Optional[str] = "name",
+    schema: Optional[BaseModel] = None,
+    prefetch: Optional[List[str]] = None,
+    limit: int = 10,
 ) -> PaginationResult:
-    limit = 10
     offset = (page - 1) * limit
 
-    if q:
-        queryset = queryset.filter(name__icontains=q)
+    # Apply search filter if q is provided
+    if q and search_field:
+        filter_expr = {f"{search_field}__icontains": q}
+        queryset = queryset.filter(**filter_expr)
+
+    # Apply prefetch_related if needed
+    if prefetch:
+        queryset = queryset.prefetch_related(*prefetch)
 
     total = await queryset.count()
 
-    # Paginasi sebelum values supaya tetap QuerySet
+    # Apply pagination
     queryset = queryset.offset(offset).limit(limit)
 
-    if fields:
-        queryset = queryset.values(*fields)
+    # Serialize using Pydantic model
+    if schema:
+        data = await schema.from_queryset(queryset)
+    else:
+        data = await queryset
 
-    data = await queryset
     return PaginationResult(total=total, page=page, data=data)

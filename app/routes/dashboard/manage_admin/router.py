@@ -16,6 +16,6 @@ async def store_data(data: StoreUpdateSchema):
 async def delete_data(id: int):
     return await destroy(id)
 
-@router.post("/reset_password/{id}")
+@router.post("/{id}/reset_password")
 async def reset_password(id: int):
     return await reset_password(id, data)
