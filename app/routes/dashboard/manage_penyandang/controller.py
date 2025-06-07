@@ -1,8 +1,9 @@
 from app.models.user import User
-from app.models.pemantau import Pemantau
-from app.models.log_penyandang_status import LogPenyandangStatus
+from app.models.penyandang import Penyandang
+from app.models.blindstick import Blindstick
+from app.models.log_blindstick import LogBlindstick
 from app.helpers import paginate
-from app.routes.dashboard.manage_pemantau.schema import ManagePemantauSchema
+from app.routes.dashboard.manage_penyandang.schema import ManagePenyandangSchema
 from fastapi import Query, HTTPException, status
 from typing import Optional
 
@@ -17,7 +18,7 @@ async def index(
             queryset=query, 
             q=q,
             page=page, 
-            schema=ManagePemantauSchema
+            schema=ManagePenyandangSchema
         )
 
     except ValueError as e:
@@ -31,27 +32,27 @@ async def show(
     page: int = Query(1, ge=1),
 ):
     try:
-        pemantau = await Pemantau.filter(user_id=id).select_related("user").first()
-        if pemantau is None:
+        penyandang = await Penyandang.filter(user_id=id).select_related("user").first()
+        if penyandang is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Pemantau not found"
+                detail="Penyandang not found"
             )
         
-        penyandang_query = pemantau.penyandang.all()
+        pemantau_query = penyandang.pemantau.all()
 
-        total = await penyandang_query.count()
+        total = await pemantau_query.count()
         limit = 10
         offset = (page - 1) * limit
 
-        penyandang = await penyandang_query.order_by("-created_at").offset(offset).limit(limit)
+        pemantau = await pemantau_query.order_by("-created_at").offset(offset).limit(limit)
 
         return {
-            "pemantau": pemantau,
-            "penyandang": {
+            "penyandang": penyandang,
+            "pemantau": {
                 "total": total,
                 "page": page,
-                "data": penyandang
+                "data": pemantau
             }
         }
 
@@ -62,17 +63,22 @@ async def show(
         )
 
 
-async def last_map(id: int):
+async def last_status_blindstick(id: int):
     try:
-        data = await LogPenyandangStatus.filter(penyandang_id=id).order_by("-created_at").first()
-
+        data = await Blindstick.get_or_none(id=id)
+        
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Penyandang not found"
+                detail="Blindstick not found"
             )
+        
+        latest_status = LogBlindstick.filter(blindstick_id=data.id).order_by("-created_at").limit(3)
 
-        return data
+        return {
+            "blindstick": data,
+            "latest_status": latest_status
+        }
 
     except ValueError as e:
         raise HTTPException(
