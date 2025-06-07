@@ -1,4 +1,5 @@
 from app.models.blindstick import Blindstick
+
 from app.helpers import paginate, validate_unique
 from app.routes.dashboard.manage_blindstick.schema import StoreUpdateSchema, ManageBlindstickSchema
 from fastapi import Query, HTTPException, status

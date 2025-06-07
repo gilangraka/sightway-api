@@ -2,6 +2,7 @@ from app.models.user import User
 from app.models.penyandang import Penyandang
 from app.models.blindstick import Blindstick
 from app.models.log_blindstick import LogBlindstick
+
 from app.helpers import paginate
 from app.routes.dashboard.manage_penyandang.schema import ManagePenyandangSchema
 from fastapi import Query, HTTPException, status
