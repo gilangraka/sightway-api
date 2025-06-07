@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.routes.dashboard.manage_dashboard import index
+from app.routes.dashboard.manage_dashboard.controller import index
 
 router = APIRouter(prefix="/manage-dashboard", tags=["manage-dashboard"])
 
