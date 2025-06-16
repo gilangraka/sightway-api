@@ -15,6 +15,7 @@ dashboard_routes = [
     dashboard.manage_dashboard_router,
     dashboard.manage_category_router,
     dashboard.manage_tag_router,
+    dashboard.manage_blindstick_router
 ]
 
 mobile_routes = [

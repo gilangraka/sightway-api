@@ -5,6 +5,7 @@ from .manage_tag import router as manage_tag_router
 from .manage_dashboard import router as manage_dashboard_router
 from .manage_pemantau import router as manage_pemantau_router
 from .manage_penyandang import router as manage_penyandang_router
+from .manage_blindstick import router as manage_blindstick_router
 
 __all__ = [
     "auth_router", 
@@ -14,5 +15,6 @@ __all__ = [
     "manage_tag_router",
     "manage_dashboard_router",
     "manage_pemantau_router",
-    "manage_penyandang_router"
+    "manage_penyandang_router",
+    "manage_blindstick_router"
 ]
