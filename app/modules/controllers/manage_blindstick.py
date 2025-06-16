@@ -53,7 +53,7 @@ async def show(
         logs = await log_query.order_by("-created_at").offset(offset).limit(limit)
 
         return {
-            "blindstick": blindstick,
+            "blindstick": data,
             "logs": {
                 "total": total,
                 "page": page,
