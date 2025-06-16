@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from app.modules.schemas import TokenSchema, Depends
+from fastapi import APIRouter, Depends
+from app.modules.schemas import TokenSchema
 from app.modules.controllers.auth import login, register
 
 router = APIRouter(prefix="/auth", tags=["Auth Dashboard (Superadmin/Admin)"])
