@@ -45,7 +45,7 @@ async def store(request: StoreUpdateSchema):
         await validate_unique(MCategory, "name", request.name)
 
         slug = generate_slug(request.name)
-        payload = request.dict()
+        payload = request.model_dump()
         payload["slug"] = slug
 
         new_category = await MCategory.create(**payload)
@@ -72,7 +72,7 @@ async def update(id: int, request: StoreUpdateSchema):
             await validate_unique(MCategory, "name", request.name)
 
         slug = generate_slug(request.name)
-        payload = request.dict()
+        payload = request.model_dump()
         payload["slug"] = slug
 
         category.update_from_dict(payload)

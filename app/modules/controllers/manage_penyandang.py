@@ -9,7 +9,7 @@ async def index(
     q: Optional[str] = Query(None)
 ):
     try:
-        query = User.filter(roles__name = "pemanatau").select_related("roles")
+        query = User.filter(roles__name = "pemanatau").prefetch_related("roles")
         
         return await paginate(
             queryset=query, 
@@ -29,7 +29,7 @@ async def show(
     page: int = Query(1, ge=1),
 ):
     try:
-        penyandang = await Penyandang.filter(user_id=id).select_related("user").first()
+        penyandang = await Penyandang.filter(user_id=id).prefetch_related("user").first()
         if penyandang is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,

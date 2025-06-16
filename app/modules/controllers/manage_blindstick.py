@@ -33,14 +33,14 @@ async def show(
     log_days: int = (Query(7, ge=1))
 ):
     try:
-        data = await Blindstick.get_or_none(id=id)
+        data = await Blindstick.prefetch_related("log_blindstick").get_or_none(id=id)
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Blindstick not found"
             )
         
-        log_query = data.log_blindstick.all()
+        log_query = data.log_blindstick
 
         if str(log_days) in ['1', '3', '7']:
             cutoff = datetime.utcnow() - timedelta(days=log_days)
@@ -71,7 +71,7 @@ async def store(request: StoreUpdateSchema):
     try:
         await validate_unique(Blindstick, "mac_address", request.mac_address)
 
-        payload = request.dict()
+        payload = request.model_dump()
 
         new_blindstick = await Blindstick.create(**payload)
         return new_blindstick
