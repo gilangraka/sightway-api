@@ -11,7 +11,7 @@ class RegisterSchema(BaseModel):
     password_confirmation: str = Field(..., min_length=6, description="Konfirmasi kata sandi pengguna")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "John Doe",
                 "email": "john.doe@example.com",
