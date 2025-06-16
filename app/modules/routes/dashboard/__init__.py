@@ -3,6 +3,7 @@ from .manage_admin import router as manage_admin_router
 from .manage_category import router as manage_category_router
 from .manage_tag import router as manage_tag_router
 from .manage_dashboard import router as manage_dashboard_router
+from .manage_pemantau import router as manage_pemantau_router
 
 __all__ = [
     "auth_router", 
@@ -10,5 +11,6 @@ __all__ = [
     "manage_admin_router", 
     "manage_category_router", 
     "manage_tag_router",
-    "manage_dashboard_router"
+    "manage_dashboard_router",
+    "manage_pemantau_router"
 ]

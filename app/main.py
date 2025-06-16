@@ -10,6 +10,7 @@ app = FastAPI()
 dashboard_routes = [
     dashboard.auth_router,
     dashboard.manage_admin_router,
+    dashboard.manage_pemantau_router,
     dashboard.manage_dashboard_router,
     dashboard.manage_category_router,
     dashboard.manage_tag_router,
