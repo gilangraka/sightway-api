@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from typing import Optional
-from app.modules.schemas.manage_penyandang import index, show, last_status_blindstick
+from app.modules.controllers.manage_penyandang import index, show, last_status_blindstick
 
-router = APIRouter(prefix="/manage-penyandang", tags=["manage-penyandang"])
+router = APIRouter(prefix="/manage-penyandang", tags=["Manage Penyandang"])
 
 @router.get("/")
 async def index_handler(page: int = 1, q: Optional[str] = None):
