@@ -3,7 +3,7 @@ from app.modules.controllers.auth import register
 from app.modules.controllers.manage_admin import index, destroy, reset_password
 from app.modules.schemas.auth import TokenSchema
 
-router = APIRouter(prefix="/manage-admin", tags=["Manage Admin (superadmin)"])
+router = APIRouter(prefix="/manage-admin", tags=["Manage Admin"])
 
 @router.get("/")
 async def index_handler(page: int = 1, q: str = None):
