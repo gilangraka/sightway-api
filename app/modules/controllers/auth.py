@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from app.models import User, Role
 from app.helpers import create_access_token, verify_password, validate_unique
-from app.modules.schemas import TokenSchema, LoginSchema, RegisterSchema
+from app.modules.schemas.auth import TokenSchema, LoginSchema, RegisterSchema
 
 def login(required_roles: set[str]):
     async def loginTemplate(request: LoginSchema) -> TokenSchema:

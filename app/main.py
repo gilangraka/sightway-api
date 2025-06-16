@@ -8,7 +8,8 @@ import app.modules.routes.mobile as mobile
 app = FastAPI()
 
 dashboard_routes = [
-    dashboard.auth_router
+    dashboard.auth_router,
+    dashboard.manage_admin_router
 ]
 
 mobile_routes = [
