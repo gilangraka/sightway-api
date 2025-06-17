@@ -7,6 +7,8 @@ T = TypeVar("T")
 class PaginationResult(BaseModel, Generic[T]):
     total: int
     page: int
+    per_page: int
+    last_page: int
     data: List[T]
 
 async def paginate(
@@ -30,6 +32,7 @@ async def paginate(
         queryset = queryset.prefetch_related(*prefetch)
 
     total = await queryset.count()
+    last_page = (total + limit - 1)
 
     # Apply pagination
     queryset = queryset.offset(offset).limit(limit)
@@ -40,4 +43,4 @@ async def paginate(
     else:
         data = await queryset
 
-    return PaginationResult(total=total, page=page, data=data)
+    return PaginationResult(total=total, page=page, per_page=10, last_page=last_page, data=data)
