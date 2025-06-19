@@ -1,6 +1,7 @@
 from typing import Generic, List, Optional, TypeVar
 from pydantic import BaseModel
 from tortoise.models import Model
+import math
 
 T = TypeVar("T")
 
@@ -31,8 +32,11 @@ async def paginate(
     if prefetch:
         queryset = queryset.prefetch_related(*prefetch)
 
+    # Apply order_by
+    queryset = queryset.order_by("id")
+
     total = await queryset.count()
-    last_page = (total + limit - 1)
+    last_page = math.ceil(total / limit)
 
     # Apply pagination
     queryset = queryset.offset(offset).limit(limit)
@@ -43,4 +47,10 @@ async def paginate(
     else:
         data = await queryset
 
-    return PaginationResult(total=total, page=page, per_page=10, last_page=last_page, data=data)
+    return PaginationResult(
+        total=total,
+        page=page,
+        per_page=limit,
+        last_page=last_page,
+        data=data,
+    )

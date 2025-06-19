@@ -8,6 +8,7 @@ from app.modules.schemas.manage_blindstick import StoreUpdateSchema, ManageBlind
 async def index(
     page: int = (Query(1, ge=1)),
     is_used: Optional[bool] = (Query(None)),
+    q: Optional[str] = Query(None)
 ):
     try:
         query = Blindstick.all()
@@ -16,9 +17,11 @@ async def index(
             query = query.filter(is_used=is_used)
         
         return await paginate(
-            queryset=query, 
-            page=page, 
-            schema=ManageBlindstickSchema
+            queryset=query,
+            page=page,
+            q=q,
+            search_field="mac_address",
+            schema=ManageBlindstickSchema,
         )
 
     except ValueError as e:

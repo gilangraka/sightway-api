@@ -9,11 +9,10 @@ async def index(
     q: Optional[str] = Query(None)
 ):
     try:
-        query = User.filter(roles__name = "pemanatau").prefetch_related("roles")
-        
+        query = User.filter(roles__name = "pemantau").prefetch_related("roles")
         return await paginate(
             queryset=query, 
-            q=q,
+            q=q, 
             page=page, 
             schema=ManagePemantauSchema
         )

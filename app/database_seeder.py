@@ -27,6 +27,7 @@ async def seed():
     await seeders.seed_users()
     await seeders.seed_categories()
     await seeders.seed_tags()
+    await seeders.seed_blindsticks()
 
     print("Database seeded successfully.")
 
