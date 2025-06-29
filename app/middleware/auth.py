@@ -1,11 +1,11 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer
 from app.helpers import decode_access_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = HTTPBearer()
 
 def auth_middleware(token: str = Depends(oauth2_scheme)) -> int:
-    payload = decode_access_token(token)
+    payload = decode_access_token(token.credentials)
 
     if payload is None or "sub" not in payload:
         raise HTTPException(

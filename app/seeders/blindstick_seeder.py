@@ -1,4 +1,4 @@
-from app.models import Blindstick
+from app.models import Blindstick, LogBlindstick
 
 async def run():
     print("Seeding blindsticks...")
@@ -16,5 +16,29 @@ async def run():
 
     for mac in mac_addresses:
         await Blindstick.create(mac_address=mac)
+
+    logs = [
+        {
+            "status" : "normal",
+            "description" : "Blindstick jatuh"
+        }, 
+        {
+            "status" : "danger",
+            "description" : "User menekan tombol darurat!"
+        },
+        {
+            "status" : "danger",
+            "description" : "User menekan tombol darurat!"
+        }
+    ]
+
+    first_blindstick = await Blindstick.first()
+    for log in logs:
+        await LogBlindstick.create(
+            blindstick_id=first_blindstick.id,
+            status=log['status'],
+            description=log['description']
+        )
+
 
     print("Blindsticks seeded successfully.")

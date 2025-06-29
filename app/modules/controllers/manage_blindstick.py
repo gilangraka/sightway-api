@@ -36,7 +36,7 @@ async def show(
     log_days: int = (Query(7, ge=1))
 ):
     try:
-        data = await Blindstick.prefetch_related("log_blindstick").get_or_none(id=id)
+        data = await Blindstick.filter(id=id).prefetch_related("log_blindstick", "penyandang_blindstick").first()
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -57,6 +57,7 @@ async def show(
 
         return {
             "blindstick": data,
+            "penyandang": await data.penyandang_blindstick,
             "logs": {
                 "total": total,
                 "page": page,

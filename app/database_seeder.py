@@ -23,11 +23,11 @@ async def seed():
     await init()
     print("Seeding database...")
 
-    await seeders.seed_roles()
+    # await seeders.seed_roles()
+    # await seeders.seed_categories()
+    # await seeders.seed_tags()
+    # await seeders.seed_blindsticks()
     await seeders.seed_users()
-    await seeders.seed_categories()
-    await seeders.seed_tags()
-    await seeders.seed_blindsticks()
 
     print("Database seeded successfully.")
 

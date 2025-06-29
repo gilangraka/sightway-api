@@ -1,4 +1,4 @@
-from app.models import Role, User
+from app.models import Role, User, Penyandang, Pemantau
 from app.helpers import hash_password
 
 async def run():
@@ -41,5 +41,17 @@ async def run():
         # Assign role
         role = await Role.get(name=user_data["roles"])
         await user.roles.add(role)
+
+    # Add to table pemantau & penyandang
+    penyandang = await User.filter(email="penyandang@gmail.com").first()
+    await Penyandang.create(
+        user_id=penyandang.id,
+        blindstick_id=1
+    )
+
+    pemantau = await User.filter(email="pemantau@gmail.com").first()
+    await Pemantau.create(
+        user_id=pemantau.id
+    )
 
     print("Users seeded successfully.")
