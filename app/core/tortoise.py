@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+print(os.getenv("DB_HOST"))
+
 TORTOISE_ORM = {
     'connections': {
         'default': {

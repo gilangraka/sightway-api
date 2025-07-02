@@ -4,11 +4,11 @@ from app.models import MTag, Post, MCategory, User, LogUser
 async def index():
     try:
         data = {
-            'total_posts': await Post.count(),
-            'total_users': await User.count(),
-            'total_tags': await MTag.count(),
-            'total_categories': await MCategory.count(),
-            'total_logs': await LogUser.user.order_by(LogUser.id.desc()).limit(5).get(),
+            'total_posts': await Post.all().count(),
+            'total_users': await User.all().count(),
+            'total_tags': await MTag.all().count(),
+            'total_categories': await MCategory.all().count(),
+            'total_logs': await LogUser.all().order_by('-id').limit(5).values()
         }
         return data
 
