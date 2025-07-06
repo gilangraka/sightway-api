@@ -23,6 +23,22 @@ async def index(
             detail=str(e)
         )     
     
+async def show(id: int):
+    try:
+        data = await User.get_or_none(id=id)
+        if data is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        return data
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    
 # Store pakai controller auth saja
 
 async def destroy(id: int):

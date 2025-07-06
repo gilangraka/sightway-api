@@ -9,6 +9,9 @@ from .manage_dashboard import router as manage_dashboard_router
 from .manage_pemantau import router as manage_pemantau_router
 from .manage_penyandang import router as manage_penyandang_router
 from .manage_blindstick import router as manage_blindstick_router
+from .manage_app_history import router as manage_app_history_router
+from .manage_post import router as manage_post_router
+
 
 # Router untuk route yang butuh auth + superadmin
 dashboard_admin_router = APIRouter(
@@ -25,6 +28,7 @@ dashboard_superadmin_router = APIRouter(
     ]
 )
 
+dashboard_superadmin_router.include_router(manage_app_history_router)
 dashboard_superadmin_router.include_router(manage_admin_router)
 dashboard_admin_router.include_router(manage_category_router)
 dashboard_admin_router.include_router(manage_tag_router)
@@ -32,6 +36,7 @@ dashboard_admin_router.include_router(manage_dashboard_router)
 dashboard_admin_router.include_router(manage_pemantau_router)
 dashboard_admin_router.include_router(manage_penyandang_router)
 dashboard_admin_router.include_router(manage_blindstick_router)
+dashboard_admin_router.include_router(manage_post_router)
 
 __all__ = [
     "auth_router",

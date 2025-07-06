@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 from app.modules.controllers.auth import register
-from app.modules.controllers.manage_admin import index, destroy, reset_password
+from app.modules.controllers.manage_admin import index, destroy, reset_password, show
 from app.modules.schemas.auth import TokenSchema
 
 router = APIRouter(prefix="/manage-admin", tags=["Manage Admin"])
@@ -8,6 +8,10 @@ router = APIRouter(prefix="/manage-admin", tags=["Manage Admin"])
 @router.get("/")
 async def index_handler(page: int = 1, q: str = None):
     return await index(page, q)
+
+@router.get("/{id}")
+async def show_handler(id:int):
+    return await show(id)
 
 @router.post("/", response_model=TokenSchema)
 async def store_handler(token: TokenSchema = Depends(register("admin"))):

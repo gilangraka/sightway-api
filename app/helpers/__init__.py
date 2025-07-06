@@ -2,6 +2,7 @@ from .auth import hash_password, verify_password, create_access_token, decode_ac
 from .generate_slug import generate_slug
 from .paginate import paginate
 from .validator import validate_unique
+from .store_activity import store_log
 
 __all__ = [
     "hash_password",
@@ -11,4 +12,5 @@ __all__ = [
     "generate_slug",
     "paginate",
     "validate_unique",
+    "store_log"
 ]
