@@ -20,6 +20,7 @@ async def paginate(
     schema: Optional[BaseModel] = None,
     prefetch: Optional[List[str]] = None,
     limit: int = 10,
+    order: str = "desc", 
 ) -> PaginationResult:
     offset = (page - 1) * limit
 
@@ -33,7 +34,11 @@ async def paginate(
         queryset = queryset.prefetch_related(*prefetch)
 
     # Apply order_by
-    queryset = queryset.order_by("id")
+    # Apply order_by
+    if order == "asc":
+        queryset = queryset.order_by("id")
+    else:
+        queryset = queryset.order_by("-id")
 
     total = await queryset.count()
     last_page = math.ceil(total / limit)

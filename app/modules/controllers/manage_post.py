@@ -6,16 +6,24 @@ from app.modules.schemas.manage_post import StoreUpdateSchema, ManagePostSchema
 
 async def index(
     page: int = (Query(1, ge=1)),
-    q: Optional[str] = Query(None)
+    q: Optional[str] = Query(None),
+    order: Optional[str] = (Query(None)),
 ):
     try:
         query = Post.all()
+        order_status = "desc"
+
+        if order is not None:
+            if order == "asc":
+                order_status = order
         
         return await paginate(
             queryset=query,
             page=page,
             q=q,
-            schema=ManagePostSchema  
+            schema=ManagePostSchema,
+            order=order_status,
+            search_field="title"
         )
 
     except ValueError as e:
@@ -24,9 +32,9 @@ async def index(
             detail=str(e)
         )     
 
-async def show(slug: str):
+async def show(id: int):
     try:
-        post = await Post.get_or_none(slug=slug).prefetch_related("category", "tags")
+        post = await Post.get_or_none(id=id).prefetch_related("category", "tags")
 
         if post is None:
             raise HTTPException(
@@ -108,9 +116,9 @@ async def store(request: StoreUpdateSchema):
         )
 
 
-async def destroy(slug: str):
+async def destroy(id: int):
     try:
-        post = await Post.get_or_none(slug=slug)
+        post = await Post.get_or_none(id=id)
 
         if post is None:
             raise HTTPException(

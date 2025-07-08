@@ -3,7 +3,7 @@ from typing import List
 from app.models import Post
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-ManagePostSchema = pydantic_model_creator(Post, name="ManagePostSchema", include=("id", "title", "slug", "thumbnail"))
+ManagePostSchema = pydantic_model_creator(Post, name="ManagePostSchema", include=("id", "title", "slug", "thumbnail", "count_view"))
 
 class StoreUpdateSchema(BaseModel):
     title: str

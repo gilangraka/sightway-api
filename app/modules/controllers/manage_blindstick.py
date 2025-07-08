@@ -1,7 +1,7 @@
 from fastapi import Query, HTTPException, status
 from typing import Optional
 from datetime import datetime, timedelta
-from app.models import Blindstick
+from app.models import Blindstick, User
 from app.helpers import paginate, validate_unique
 from app.modules.schemas.manage_blindstick import StoreUpdateSchema, ManageBlindstickSchema
 
@@ -36,17 +36,21 @@ async def show(
     log_days: int = (Query(7, ge=1))
 ):
     try:
-        data = await Blindstick.filter(id=id).prefetch_related("log_blindstick", "penyandang_blindstick").first()
+        data = await Blindstick.filter(id=id).prefetch_related(
+            "log_blindstick",
+            "penyandang_blindstick__user"
+        ).first()
+
         if data is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Blindstick not found"
             )
-        
+
         log_query = data.log_blindstick
 
         if str(log_days) in ['1', '3', '7']:
-            cutoff = datetime.utcnow() - timedelta(days=log_days)
+            cutoff = datetime.utcnow() - timedelta(days=int(log_days))
             log_query = log_query.filter(created_at__gte=cutoff)
 
         total = await log_query.count()
@@ -55,15 +59,26 @@ async def show(
 
         logs = await log_query.order_by("-created_at").offset(offset).limit(limit)
 
+        penyandang = await data.penyandang_blindstick.all().first()
+        nama_penyandang = None
+
+        if penyandang:
+            user = await penyandang.user
+            nama_penyandang = {
+                "id": penyandang.id,
+                "name": user.name if user else None
+            }
+
         return {
             "blindstick": data,
-            "penyandang": await data.penyandang_blindstick,
+            "penyandang": nama_penyandang,
             "logs": {
                 "total": total,
                 "page": page,
                 "data": logs
             }
         }
+
 
     except ValueError as e:
         raise HTTPException(
