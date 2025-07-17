@@ -5,7 +5,7 @@ from app.core import TORTOISE_ORM
 
 from app.modules.routes.dashboard import auth_router, dashboard_superadmin_router, dashboard_admin_router
 from app.modules.routes.guest import guest_router
-import app.modules.routes.mobile as mobile
+from app.modules.routes.mobile import mobile_router
 
 app = FastAPI()
 
@@ -26,13 +26,7 @@ app.include_router(auth_router, prefix="/dashboard")
 app.include_router(dashboard_superadmin_router, prefix="/dashboard")
 app.include_router(dashboard_admin_router, prefix="/dashboard")
 app.include_router(guest_router, prefix="/guest")
-
-mobile_routes = [
-    mobile.auth_router
-]
-
-for route in mobile_routes:
-    app.include_router(route, prefix="/mobile")
+app.include_router(mobile_router, prefix="/mobile")
     
 register_tortoise(
     app,

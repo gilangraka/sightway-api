@@ -59,6 +59,14 @@ def register(role: str):
         user = await User.create(name=request.name, email=request.email, password=hashed_password)
         await user.roles.add(checkRole)
 
+        if role == "penyandang":
+            from app.models import Penyandang
+            await Penyandang.create(user_id=user.id)
+
+        elif role == "pemantau":
+            from app.models import Pemantau
+            await Pemantau.create(user_id=user.id)
+
         access_token = create_access_token({"sub": str(user.id)})
         user_dict = {
             "id" : user.id,

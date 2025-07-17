@@ -30,6 +30,7 @@ TORTOISE_ORM = {
                 "app.models.blindstick",
                 "app.models.penyandang",
                 "app.models.pemantau",
+                "app.models.penyandang_pemantau",
                 "app.models.log_user",
                 "app.models.log_penyandang_map",
                 "app.models.log_penyandang_status",
