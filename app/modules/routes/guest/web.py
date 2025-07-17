@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 from app.modules.controllers.guest_web import last_article, last_app_history, show_article, search_article
 
-router = APIRouter(prefix="/guest", tags=["Guest Web"])
+router = APIRouter(prefix="/web", tags=["Guest Web"])
 
 @router.get("/last-app-history")
 async def get_last_app_history():
