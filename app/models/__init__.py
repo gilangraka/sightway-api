@@ -12,6 +12,7 @@ from .penyandang import Penyandang
 from .post import Post
 from .role import Role
 from .user import User
+from .penyandang_pemantau import PenyandangPemantau
 
 __all__ = [
     "AppHistory",
@@ -27,5 +28,6 @@ __all__ = [
     "Penyandang",
     "Post",
     "Role",
-    "User"
+    "User",
+    "PenyandangPemantau"
 ]

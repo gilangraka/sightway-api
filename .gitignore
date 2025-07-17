@@ -3,3 +3,4 @@
 migrations
 **/__pycache__/
 pyproject.toml
+firebase_credential.json
