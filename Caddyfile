@@ -1,0 +1,3 @@
+api-sightway.dgdev.my.id {
+    reverse_proxy sightway-api:8000
+}

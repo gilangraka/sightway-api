@@ -23,9 +23,17 @@ async def search_penyandang_handler(
 @router.get("/list-penyandang")
 async def list_penyandang_handler(
     user_id: int = Depends(auth_middleware),
-    _= Depends(role_middleware(["pemantau"]))
+    _= Depends(role_middleware(["pemantau"])),
+    status_filter: Optional[str] = Query(None, description="Filter by status penyandang")
 ):
-    return await list_penyandang(pemantau_id=user_id)
+    pemantau = await Pemantau.get_or_none(user_id=user_id)
+    if not pemantau:
+        raise HTTPException(
+            status_code=404,
+            detail="Pemantau not found"
+        )
+
+    return await list_penyandang(pemantau_id=pemantau.id, status_filter=status_filter)
 
 @router.post("/add-invitation-penyandang")
 async def add_invitation_penyandang_handler(

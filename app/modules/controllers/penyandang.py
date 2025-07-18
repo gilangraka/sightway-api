@@ -43,7 +43,9 @@ async def list_pemantau(penyandang_id: int, status_filter: Optional[str] = None)
         queryset = await query.select_related("pemantau", "pemantau__user").values(
             'pemantau__id',
             'pemantau__user__name',
-            'pemantau__user__email'
+            'pemantau__user__email',
+            'status',
+            'detail_status'
         )
 
         filtered = [

@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  sightway-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sightway-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+    restart: always
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - sightway-api
+
+volumes:
+  caddy_data:
+  caddy_config:

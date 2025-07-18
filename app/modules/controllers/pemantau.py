@@ -40,15 +40,21 @@ async def search_penyandang(pemantau_id: int, email: str = Query(None, min_lengt
             detail=str(e)
         )
 
-async def list_penyandang(pemantau_id: int):
+async def list_penyandang(pemantau_id: int, status_filter: Optional[str] = None):
     try:
-        queryset = await Pemantau.filter(user_id=pemantau_id).select_related("penyandang", "penyandang__user").values(
+        query = PenyandangPemantau.filter(pemantau_id=pemantau_id)
+        
+        if status_filter:
+            query = query.filter(status=status_filter)
+        
+        queryset = await query.select_related("penyandang", "penyandang__user").values(
             'penyandang__id',
             'penyandang__user__name',
-            'penyandang__user__email'
+            'penyandang__user__email',
+            'status',
+            'detail_status'
         )
 
-        # Hapus entri yang nilai relasinya null
         filtered = [
             q for q in queryset
             if q["penyandang__id"] is not None and q["penyandang__user__name"] is not None
