@@ -24,7 +24,7 @@ app.include_router(dashboard_admin_router, prefix="/dashboard")
 app.include_router(guest_router, prefix="/guest")
 app.include_router(mobile_router, prefix="/mobile")
 
-fcm = FCMService("service-account.json", "sightway-9f360")
+fcm = FCMService("firebase_credential.json", "sightway-9f360")
 
 @app.post("/send-fcm/")
 def send_fcm(token: str, title: str, body: str):
