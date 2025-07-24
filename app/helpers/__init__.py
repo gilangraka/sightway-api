@@ -3,6 +3,7 @@ from .generate_slug import generate_slug
 from .paginate import paginate
 from .validator import validate_unique
 from .store_activity import store_log
+from .fcm_service import FCMService
 
 __all__ = [
     "hash_password",
@@ -12,5 +13,6 @@ __all__ = [
     "generate_slug",
     "paginate",
     "validate_unique",
-    "store_log"
+    "store_log",
+    "FCMService"
 ]
